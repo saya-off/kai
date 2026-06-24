@@ -1,9 +1,8 @@
 const LETTER_LINES = [
-  "Woi saya dinda.",
-  "Saya bosan nonton, males bat. kalau bukan tetangga gamau nonton ah.",
-  "iyo bilangmi terus 'aku mah ganteng, aku mah gini, aku mah begitu'.",
-  "apa apalahhh bla bla bla wahai vtuber plenger kebangetan. OKE CUKUP",
-  "SPIL IPK DONGGGGGGGGGGGGGGGGGGGGGG"
+  "Weee",
+  "langsung intinya, dengerin kamu tebar pesona 'aku mah ganteng, aku mah gini gitu' tuh bikin ngantuk",
+  "tahu gak? Kalau bukan karena kasihan/tetangga, ogah banget deh nontonnya. Mending turutin",
+  "tuh kata penonton, mending spil IPK aja sini daripada kebanyakan bla bla bla!"
 ];
 
 const PETAL_SYMBOLS = ["🌸", "🌹", "✦", "·", "❀"];

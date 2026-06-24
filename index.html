@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Surat Untukmu 💌</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=IM+Fell+English:ital@0;1&family=Noto+Sans+JP:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div id="cover-page" class="page active">
+    <div class="cover-bg-glow"></div>
+    <div class="cover-content">
+      <div class="vtuber-frame">
+        <img src="kai.png" alt="Karakter" class="vtuber-img" />
+        <div class="vtuber-glow-ring"></div>
+      </div>
+      <h1 class="cover-title">Ada sesuatu</h1>
+      <p class="cover-sub">Dari dinda savila</p>
+      <button id="open-btn" class="open-letter-btn">
+        <span class="btn-icon">buka</span>
+        <span>Buka Suratnya</span>
+      </button>
+    </div>
+    <div class="petals-container" id="petals"></div>
+  </div>
+
+  <div id="letter-page" class="page">
+    <div class="letter-bg-glow"></div>
+    <div class="letter-wrapper">
+      <div class="letter-paper">
+        <div class="letter-header">
+          <div class="wax-seal">✦</div>
+          <div class="letter-date" id="letter-date"></div>
+        </div>
+
+        <div class="letter-body">
+          <p class="salutation">untuk ko,</p>
+
+          <p class="letter-text" id="line1"></p>
+          <p class="letter-text" id="line2"></p>
+          <p class="letter-text" id="line3"></p>
+          <p class="letter-text" id="line4"></p>
+          <p class="letter-text" id="line5"></p>
+
+          <p class="closing">Dengan kataku</p>
+          <p class="signature"> dari adinda</p>
+        </div>
+
+        <div class="letter-footer">
+          <button id="play-sound-btn" class="sound-btn hidden">
+            🎵 Putar OBH
+          </button>
+          <button id="back-btn" class="back-btn">← Kembali</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AUDIO -->
+  <audio id="surprise-audio" src="lagu.mp3" preload="auto"></audio>
+
+  <script src="script.js"></script>
+</body>
+</html>
