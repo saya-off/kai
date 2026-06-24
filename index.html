@@ -1,67 +1,78 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Surat Untukmu 💌</title>
+  <title>Pesan Buat Lo 🎵</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=IM+Fell+English:ital@0;1&family=Noto+Sans+JP:wght@300;400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=Bebas+Neue&family=Noto+Sans+JP:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
 
-  <div id="cover-page" class="page active">
-    <div class="cover-bg-glow"></div>
-    <div class="cover-content">
-      <div class="vtuber-frame">
-        <img src="kai.png" alt="Karakter" class="vtuber-img" />
-        <div class="vtuber-glow-ring"></div>
-      </div>
-      <h1 class="cover-title">Ada sesuatu</h1>
-      <p class="cover-sub">Dari dinda savila</p>
-      <button id="open-btn" class="open-letter-btn">
-        <span class="btn-icon">buka</span>
-        <span>Buka Suratnya</span>
-      </button>
+<!-- COVER -->
+<div id="cover-page" class="page active">
+  <div class="notes-bg" id="notes"></div>
+  <div class="cover-inner">
+    <p class="cover-label">▶ incoming message</p>
+    <div class="avatar-wrap">
+      <img src="kai.png" class="avatar-img" alt="Kai"/>
+      <div class="avatar-corner tl"></div>
+      <div class="avatar-corner tr"></div>
+      <div class="avatar-corner bl"></div>
+      <div class="avatar-corner br"></div>
     </div>
-    <div class="petals-container" id="petals"></div>
+    <div class="eq-bars" id="eq-bars"></div>
+    <h1 class="cover-title">Ada Pesan<br>Buat Lo</h1>
+    <p class="cover-from">dari: dinda savila</p>
+    <button id="open-btn" class="open-btn">▶ &nbsp;Play</button>
   </div>
+</div>
 
-  <div id="letter-page" class="page">
-    <div class="letter-bg-glow"></div>
-    <div class="letter-wrapper">
-      <div class="letter-paper">
-        <div class="letter-header">
-          <div class="wax-seal">✦</div>
-          <div class="letter-date" id="letter-date"></div>
-        </div>
-
-        <div class="letter-body">
-          <p class="salutation">untuk ko,</p>
-
-          <p class="letter-text" id="line1"></p>
-          <p class="letter-text" id="line2"></p>
-          <p class="letter-text" id="line3"></p>
-          <p class="letter-text" id="line4"></p>
-          <p class="letter-text" id="line5"></p>
-
-          <p class="closing">Dengan kataku</p>
-          <p class="signature"> dari adinda</p>
-        </div>
-
-        <div class="letter-footer">
-          <button id="play-sound-btn" class="sound-btn hidden">
-            🎵 Putar OBH
-          </button>
-          <button id="back-btn" class="back-btn">← Kembali</button>
-        </div>
+<!-- PLAYER -->
+<div id="letter-page" class="page">
+  <div class="player-card">
+    <div class="album-strip">
+      <img src="kai.png" class="album-img" alt=""/>
+      <div class="album-overlay"></div>
+      <div class="track-info">
+        <div class="track-title">Pesan dari Adinda</div>
+        <div class="track-sub">DINDA SAVILA · SATU TRACK</div>
       </div>
     </div>
+
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="prog"></div></div>
+      <div class="progress-times">
+        <span id="time-cur">0:00</span>
+        <span id="time-total">—</span>
+      </div>
+    </div>
+
+    <div class="lyrics-area">
+      <div class="lyrics-label">📄 pesan</div>
+      <div class="lyric-line" id="line1"></div>
+      <div class="lyric-line" id="line2"></div>
+      <div class="lyric-line" id="line3"></div>
+      <div class="lyric-line" id="line4"></div>
+      <div class="lyric-line" id="line5"></div>
+    </div>
+
+    <div class="sign-area" id="sign-area">
+      <div class="sign-closing">— dari yang iseng,</div>
+      <div class="sign-name">Adinda</div>
+    </div>
+
+    <div class="controls">
+      <button id="back-btn" class="back-btn">← Kembali</button>
+      <button id="play-btn" class="play-btn" title="Play/Pause">▶</button>
+      <div class="date-tag" id="date-tag"></div>
+    </div>
   </div>
+</div>
 
-  <!-- AUDIO -->
-  <audio id="surprise-audio" src="lagu.mp3" preload="auto"></audio>
+<audio id="audio" src="lagu.mp3" preload="auto"></audio>
 
-  <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>

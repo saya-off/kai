@@ -1,116 +1,134 @@
-const LETTER_LINES = [
+const LINES = [
   "Weee",
-  "langsung intinya, dengerin kamu tebar pesona 'aku mah ganteng, aku mah gini gitu' tuh bikin ngantuk",
-  "tahu gak? Kalau bukan karena kasihan/tetangga, ogah banget deh nontonnya. Mending turutin",
-  "tuh kata penonton, mending spil IPK aja sini daripada kebanyakan bla bla bla!"
+  "langsung intinya, dengerin kamu tebar pesona",
+  "'aku mah ganteng, aku mah gini gitu' tuh bikin ngantuk",
+  "tahu gak? Kalau bukan karena kasihan/tetangga,",
+  "mending spil IPK aja sini daripada kebanyakan bla bla bla!"
 ];
 
-const PETAL_SYMBOLS = ["🌸", "🌹", "✦", "·", "❀"];
-const PETAL_COUNT   = 18;
+const NOTES = ["♩","♪","♫","♬","𝅘𝅥","🎵","🎶"];
 
-const coverPage    = document.getElementById("cover-page");
-const letterPage   = document.getElementById("letter-page");
-const openBtn      = document.getElementById("open-btn");
-const backBtn      = document.getElementById("back-btn");
-const playSoundBtn = document.getElementById("play-sound-btn");
-const audio        = document.getElementById("surprise-audio");
-const letterDate   = document.getElementById("letter-date");
-const petalsWrap   = document.getElementById("petals");
-
-function setDate() {
-  const now = new Date();
-  const options = { day: "numeric", month: "long", year: "numeric" };
-  letterDate.textContent = now.toLocaleDateString("id-ID", options);
-}
-
-function spawnPetals() {
-  for (let i = 0; i < PETAL_COUNT; i++) {
-    const p = document.createElement("span");
-    p.classList.add("petal");
-    p.textContent = PETAL_SYMBOLS[Math.floor(Math.random() * PETAL_SYMBOLS.length)];
-    p.style.left          = Math.random() * 100 + "vw";
-    p.style.fontSize      = (0.7 + Math.random() * 0.8) + "rem";
-    p.style.opacity       = (0.3 + Math.random() * 0.5).toString();
-    p.style.animationDuration  = (6 + Math.random() * 8) + "s";
-    p.style.animationDelay     = (Math.random() * 6) + "s";
-    petalsWrap.appendChild(p);
+function spawnNotes() {
+  const wrap = document.getElementById('notes');
+  for (let i = 0; i < 14; i++) {
+    const n = document.createElement('span');
+    n.classList.add('note');
+    n.textContent = NOTES[Math.floor(Math.random() * NOTES.length)];
+    n.style.left = Math.random() * 100 + 'vw';
+    n.style.fontSize = (0.8 + Math.random() * 0.9) + 'rem';
+    n.style.opacity = (0.2 + Math.random() * 0.4).toString();
+    n.style.animationDuration = (8 + Math.random() * 10) + 's';
+    n.style.animationDelay = (Math.random() * 8) + 's';
+    wrap.appendChild(n);
   }
 }
 
-function revealLetterLines() {
-  const ids = ["line1", "line2", "line3", "line4", "line5"];
-
-  LETTER_LINES.forEach((text, i) => {
-    const el = document.getElementById(ids[i]);
-    if (!el) return;
-    el.textContent = text;
-
-    setTimeout(() => {
-      el.classList.add("revealed");
-    }, 300 + i * 350);
+function buildEQ() {
+  const wrap = document.getElementById('eq-bars');
+  const heights = [14,22,10,28,18,24,8,20,16,26];
+  const speeds  = [0.6,0.9,0.5,1.1,0.75,0.85,0.55,0.95,0.7,1.0];
+  heights.forEach((h, i) => {
+    const b = document.createElement('div');
+    b.classList.add('eq-bar');
+    b.style.setProperty('--h', h + 'px');
+    b.style.setProperty('--d', speeds[i] + 's');
+    b.style.animationDelay = (i * 0.07) + 's';
+    wrap.appendChild(b);
   });
-
-  const closing   = document.querySelector(".closing");
-  const signature = document.querySelector(".signature");
-  const delay     = 300 + LETTER_LINES.length * 350 + 200;
-
-  setTimeout(() => {
-    closing.classList.add("revealed");
-    signature.classList.add("revealed");
-  }, delay);
-
-  setTimeout(() => {
-    playSoundBtn.classList.remove("hidden");
-  }, delay + 600);
 }
 
-function openLetter() {
-  coverPage.classList.remove("active");
-  setTimeout(() => {
-    letterPage.classList.add("active");
-    revealLetterLines();
-  }, 500);
+function setDate() {
+  const d = new Date();
+  document.getElementById('date-tag').textContent =
+    d.toLocaleDateString('id-ID', {day:'numeric',month:'short',year:'numeric'});
 }
 
-function goBack() {
-  letterPage.classList.remove("active");
-  setTimeout(() => {
-    coverPage.classList.add("active");
-    audio.pause();
-    audio.currentTime = 0;
-    ["line1","line2","line3","line4","line5"].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.classList.remove("revealed");
-    });
-    document.querySelector(".closing").classList.remove("revealed");
-    document.querySelector(".signature").classList.remove("revealed");
-    playSoundBtn.classList.add("hidden");
-  }, 500);
-}
+const coverPage  = document.getElementById('cover-page');
+const letterPage = document.getElementById('letter-page');
+const openBtn    = document.getElementById('open-btn');
+const backBtn    = document.getElementById('back-btn');
+const playBtn    = document.getElementById('play-btn');
+const audio      = document.getElementById('audio');
+const prog       = document.getElementById('prog');
+const timeCur    = document.getElementById('time-cur');
+const timeTotal  = document.getElementById('time-total');
+const signArea   = document.getElementById('sign-area');
 
 let isPlaying = false;
+let revealed = false;
 
-function toggleSound() {
+function fmt(s) {
+  const m = Math.floor(s/60), sec = Math.floor(s%60);
+  return m + ':' + String(sec).padStart(2,'0');
+}
+
+audio.addEventListener('loadedmetadata', () => {
+  timeTotal.textContent = fmt(audio.duration);
+});
+
+audio.addEventListener('timeupdate', () => {
+  if (!audio.duration) return;
+  const pct = (audio.currentTime / audio.duration) * 100;
+  prog.style.width = pct + '%';
+  timeCur.textContent = fmt(audio.currentTime);
+});
+
+audio.addEventListener('ended', () => {
+  playBtn.textContent = '▶';
+  isPlaying = false;
+});
+
+function togglePlay() {
   if (isPlaying) {
     audio.pause();
-    playSoundBtn.textContent = "🎵 Putar Kejutan";
+    playBtn.textContent = '▶';
     isPlaying = false;
   } else {
-    audio.play().catch(() => {
-    });
-    playSoundBtn.textContent = "⏸ Pause";
+    audio.play().catch(()=>{});
+    playBtn.textContent = '⏸';
     isPlaying = true;
   }
 }
 
-audio.addEventListener("ended", () => {
-  playSoundBtn.textContent = "🎵 Putar Lagi";
-  isPlaying = false;
-});
+function revealLines() {
+  if (revealed) return;
+  revealed = true;
+  LINES.forEach((text, i) => {
+    const el = document.getElementById('line' + (i+1));
+    if (!el) return;
+    el.textContent = text;
+    setTimeout(() => { el.classList.add('active'); }, 400 + i * 400);
+  });
+  const delay = 400 + LINES.length * 400 + 300;
+  setTimeout(() => { signArea.classList.add('show'); }, delay);
+}
 
-openBtn.addEventListener("click", openLetter);
-backBtn.addEventListener("click", goBack);
-playSoundBtn.addEventListener("click", toggleSound);
+function openLetter() {
+  coverPage.classList.remove('active');
+  setTimeout(() => {
+    letterPage.classList.add('active');
+    revealLines();
+  }, 600);
+}
 
+function goBack() {
+  letterPage.classList.remove('active');
+  audio.pause(); audio.currentTime = 0;
+  playBtn.textContent = '▶'; isPlaying = false;
+  prog.style.width = '0%'; timeCur.textContent = '0:00';
+  ['line1','line2','line3','line4','line5'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.classList.remove('active','past'); el.textContent = ''; }
+  });
+  signArea.classList.remove('show');
+  revealed = false;
+  setTimeout(() => { coverPage.classList.add('active'); }, 600);
+}
+
+openBtn.addEventListener('click', openLetter);
+backBtn.addEventListener('click', goBack);
+playBtn.addEventListener('click', togglePlay);
+
+spawnNotes();
+buildEQ();
 setDate();
-spawnPetals();
